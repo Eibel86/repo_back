@@ -1,7 +1,7 @@
 const { queryDB } = require("./DBquery")
 const createQuery = `
 CREATE TABLE IF NOT EXISTS users (
-    user_id INT PRIMARY KEY,
+    user_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     name VARCHAR(120) NOT NULL,
     email VARCHAR(120) UNIQUE NOT NULL,
     password VARCHAR(200) NOT NULL,
@@ -9,17 +9,17 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 CREATE TABLE IF NOT EXISTS directors (
-    director_id INT PRIMARY KEY,
+    director_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     name VARCHAR(120) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS genres (
-    genre_id INT PRIMARY KEY,
+    genre_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     name VARCHAR(120) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS films (
-    film_id INT PRIMARY KEY,
+    film_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     director_id INTEGER REFERENCES directors(director_id) ON DELETE CASCADE,
     genre_id  INTEGER REFERENCES genres(genre_id) ON DELETE CASCADE,
     full_title VARCHAR(200) NOT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS films (
 );
 
 CREATE TABLE IF NOT EXISTS favourites (
-    favourite_id INT PRIMARY KEY,
+    favourite_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     user_id INTEGER REFERENCES users(user_id) ON DELETE CASCADE,
     film_id INTEGER REFERENCES films(film_id) ON DELETE CASCADE
 );

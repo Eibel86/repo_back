@@ -1,7 +1,7 @@
 const pool = require("./DBconnect")
-const queryDB = async (query) => {
+const queryDB = async (query, params = []) => {
     try {
-        const result = await pool.query(query);
+        const result = await pool.query(query, params);
         return result;
     } catch (error) {
         throw error;
@@ -11,4 +11,3 @@ const queryDB = async (query) => {
 module.exports = {
     queryDB
 }
-
