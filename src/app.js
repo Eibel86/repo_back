@@ -16,12 +16,15 @@ app.use("/auth", authRoutes);
 app.use("/api/v1", publicRoutes);
 
 
-createDB();
 
 
 app.listen(port, () => {
     console.log(`server run on port: ${port}`)
 })
 
+const temp = async () => {
+    await createDB();
+}
 
 
+temp()
