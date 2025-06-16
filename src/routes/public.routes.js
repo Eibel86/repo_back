@@ -1,4 +1,5 @@
 const { Router } = require("express");
+const { check } = require('express-validator');
 
 const router = new Router();
 
@@ -11,31 +12,72 @@ const {
     deleteFilmById
 } = require("../controllers/public.controller");
 
+const {
+    BASIC_REGEX,
+    PASS_REGEX,
+    LONG_BASIC_REGEX,
+    TEXT_BASIC_REGEX,
+    NUMBER_REGEX,
+    URL_REGEX
 
+} = require("../utils/regexLibrary")
+
+const {
+    validateInput
+} = require("../middlewares/index.middlewares")
 
 // GET ALL FILMS todo: hacer todas las rutas bien
 //GET: http://localhost:5000/api/v1/films
 router.get("/films", getAllFilms);
 
 // GET FILM BY Title
-router.get("/films/:title", getFilmByTitle);
+//GET: http://localhost:5000/api/v1/film/<id>
+router.get("/films/:title", [
+    check("title", "invalid title").matches(LONG_BASIC_REGEX),
+    validateInput
+], getFilmByTitle);
 
 // GET FILM BY ID
 //GET: http://localhost:5000/api/v1/film/<id>
-router.get("/film/:id", getFilmById);
+router.get("/film/:id", [
+    check("id", "invalid id").matches(NUMBER_REGEX),
+    validateInput
+], getFilmById);
 
 //CREATE FILM
 //POST: http://localhost:5000/api/v1/films
-router.post("/films", createFilm);
+router.post("/films", [
+    check("full_title", "invalid title").matches(LONG_BASIC_REGEX),
+    check("image_url", "invalid image").matches(URL_REGEX),
+    check("relase_date", "invalid relase_date").isDate(),
+    check("duration", "invalid duration").isTime(),
+    check("synopsis", "invalid synopsis").matches(TEXT_BASIC_REGEX),
+    check("director_name", "invalid name director").matches(BASIC_REGEX),
+    check("genre_name", "invalid name genre").matches(BASIC_REGEX),
+    validateInput
+], createFilm);
+
 
 //UPDATE FILM BY ID
 //PUT: http://localhost:5000/api/v1/films
-router.put("/films", updateFilmById);
+router.put("/films", [
+    check("id", "invalid id").matches(NUMBER_REGEX),
+    check("full_title", "invalid title").matches(LONG_BASIC_REGEX),
+    check("image_url", "invalid image").matches(URL_REGEX),
+    check("relase_date", "invalid relase_date").isDate(),
+    check("duration", "invalid duration").isTime(),
+    check("synopsis", "invalid synopsis").matches(TEXT_BASIC_REGEX),
+    check("director_name", "invalid name director").matches(BASIC_REGEX),
+    check("genre_name", "invalid name genre").matches(BASIC_REGEX),
+    validateInput
+], updateFilmById);
 
 //DELETE FILM BY ID
 //DELETE: http://localhost:5000/api/v1/films/<id>
-router.delete("/films/:id", deleteFilmById);
-
+router.delete("/films/:id", [
+    check("id", "invalid id").matches(NUMBER_REGEX),
+    validateInput
+], deleteFilmById);
 
 
 module.exports = router;

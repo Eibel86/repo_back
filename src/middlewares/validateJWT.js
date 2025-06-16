@@ -1,11 +1,14 @@
-const { verifyJWT } = require("../utils/JWT")
+const { verifyJWT } = require("../utils/JWTveryfy")
 
 /**
- * Valida si en el header se está enviando un token valido, si es el caso lo almacena en el requerimiento.
- * @param {*} req 
- * @param {*} res 
- * @param {*} next 
- * @returns 
+ * Middleware para validar tokens JWT en las solicitudes HTTP.
+ * Verifica la presencia y validez del token en el header 'Authorization'.
+ * Si es válido, adjunta el email y rol del usuario al objeto 'req' para su uso posterior.
+ * Si no es válido, devuelve una respuesta de error.
+ * @param {*} req Objeto de solicitud.
+ * @param {*} res Objeto de respuesta.
+ * @param {*} next Función para pasar al siguiente middleware.
+ * @returns {Object|void} Retorna una respuesta JSON con errores o pasa al siguiente middleware.
  */
 const validateJWT = async (req, res, next) => {
     const authorization = req.header('authorization');
@@ -31,6 +34,4 @@ const validateJWT = async (req, res, next) => {
 }
 
 
-module.exports = {
-    validateJWT
-}
+module.exports = validateJWT
