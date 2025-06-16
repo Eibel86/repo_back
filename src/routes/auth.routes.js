@@ -1,20 +1,48 @@
 const { Router } = require("express");
-const router = new Router();
+const { check } = require('express-validator');
+
+const {
+    validateInput,
+    validateJWT,
+    validateRole
+} = require("../middlewares/index.middlewares")
+
 const {
     login,
     registry,
-    renewToken,
-    validateRole
-} = require("../controllers/auth.controller")
+    renewToken
+} = require("../controllers/auth.controller");
 
 
-router.post("/login", login)
+const { PASS_REGEX,
+    BASIC_REGEX
+} = require("../utils/regexLibrary")
 
-router.post("/registry", registry)
+const router = new Router();
 
-router.get("/renewToken", renewToken)
 
-router.get("/validateRole", validateRole)
+//LOGIN
+router.post("/login", [
+    check("email", "invalid email").isEmail(),
+    check("password", "invalid password").matches(PASS_REGEX),
+    validateInput
+], login)
+//REGISTRY
+router.post("/registry", [
+    check("email", "invalid email").isEmail(),
+    check("password", "invalid password").matches(PASS_REGEX),
+    check("user_name", "invalid user name").matches(BASIC_REGEX),
+    validateInput
+], registry)
+//RENEWTOKEN
+router.get("/renewToken", [
+    validateJWT
+], renewToken)
+//VALIDATE ADMIN ROLE
+router.get("/validateAdminRole", [
+    validateJWT,
+    validateRole("Admin")
+], login)
 
 
 module.exports = router;
