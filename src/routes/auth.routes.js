@@ -31,7 +31,7 @@ router.post("/login", [
 router.post("/registry", [
     check("email", "invalid email").isEmail(),
     check("password", "invalid password").matches(PASS_REGEX),
-    check("user_name", "invalid user name").matches(BASIC_REGEX),
+    check("name", "invalid user name").matches(BASIC_REGEX),
     validateInput
 ], registry)
 //RENEWTOKEN
