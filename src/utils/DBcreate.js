@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS films (
     genre_id  INTEGER REFERENCES genres(genre_id) ON DELETE CASCADE,
     full_title VARCHAR(200) NOT NULL,
     image_url VARCHAR(300) NOT NULL,
-    relase_date DATE NOT NULL,
+    release_date DATE NOT NULL,
     duration TIME NOT NULL,
     synopsis VARCHAR(600)
 );
