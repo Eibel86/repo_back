@@ -47,11 +47,17 @@ const initDB = async () => {
             );
         `);
 
-        // 3. Insertar datos ficticios
+        // 3. Hashear contraseñas
+        const password1 = await bcrypt.hash("password123", 10);
+        const password2 = await bcrypt.hash("admin456", 10);
+
+        // 4. Insertar datos ficticios
         await queryDB(`INSERT INTO users (name, email, password, role)
                        VALUES 
-                       ('Alice', 'alice@email.com', 'hashedpwd1', 'user'),
-                       ('Bob', 'bob@email.com', 'hashedpwd2', 'admin')`);
+                       ('Alice', 'alice@email.com', $1, 'user'),
+                       ('Bob', 'bob@email.com', $2, 'admin')`,
+            [password1, password2]
+        );
 
         await queryDB(`INSERT INTO directors (name)
                        VALUES ('Lana Wachowski'), ('Christopher Nolan')`);
