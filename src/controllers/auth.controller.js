@@ -8,7 +8,7 @@ const registry = async (req, res) => { }
  * @param {*} res 
  */
 const renewToken = async (req, res) => {
-    generateJWT({ email: req.tokenEmail, role: req.email })
+    generateJWT({ email: req.tokenEmail, role: req.role })
         .then(resp => {
             return res.status(202).json({
                 ok: true,
