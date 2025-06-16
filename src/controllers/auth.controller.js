@@ -3,10 +3,65 @@ const bcrypt = require("bcryptjs")
 const userModel = require("../models/user.model");
 const { generateJWT } = require("../utils/JWTgenerate")
 
-// FUNCION login
-const login = async (req, res) => {
 
-}
+
+// FUNCION login
+/**
+ * Controlador para iniciar sesión de un usuario.
+ *
+ * - Verifica si el usuario existe por su email.
+ * - Compara la contraseña enviada con la almacenada.
+ * - Si es correcta, genera un token JWT y lo envía al cliente.
+ *
+ * @async
+ * @function login
+ * @param req - Objeto de solicitud HTTP con `email` y `password` en el body.
+ * @param res - Objeto de respuesta HTTP.
+ * @returns {Promise} Devuelve una respuesta JSON con un token o un mensaje de error.
+ */
+const login = async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        //1. Buscar al usuario por email
+        const user = await userModel.findByEmail(email);
+
+        //2. Si no existe el usuario
+        if (!user) {
+            return res.status(404).json({
+                error: "Usuario no encontrado"
+            });
+        }
+
+        //3. Si sí existe comparar contraseña con bcrypt
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(401).json({
+                error: "Contraseña incorrecta"
+            });
+        }
+
+        //4. Si todo coincide generar token JWT
+        const token = await generateJWT({
+            uid: user.user_id,
+            email: user.email,
+            role: user.role
+        });
+
+        //5. Respuesta exitosa
+        return res.status(200).json({
+            message: "Login exitoso",
+            token
+        });
+
+    } catch (error) {
+        console.log("Error en login:", error);
+        return res.status(500).json({
+            error: "Erros interno del servidor"
+        });
+    }
+};
+
 
 // FUNCION de registro
 /**
@@ -18,8 +73,8 @@ const login = async (req, res) => {
  *
  * @async
  * @function registry
- * @param {import('express').Request} req - Objeto de solicitud HTTP con los datos del usuario en `req.body`.
- * @param {import('express').Response} res - Objeto de respuesta HTTP.
+ * @param req - Objeto de solicitud HTTP con los datos del usuario en `req.body`.
+ * @param res - Objeto de respuesta HTTP.
  * @returns {Promise} Responde al cliente con un JSON (usuario creado o error). Sólo ejecuta la lógica y termina. 
  */
 const registry = async (req, res) => {
@@ -59,10 +114,22 @@ const registry = async (req, res) => {
     }
 };
 
+
+
+// FUNCION de renovar token
 /**
- * Genera un nuevo token, en su validación correspondiente deberia de comprobarse que el requirimiento ya contiene un token válido.
- * @param {*} req 
- * @param {*} res 
+ * Controlador para renovar el token JWT de un usuario autenticado.
+ *
+ * Esta función asume que el middleware anterior ha validado un token existente
+ * y ha inyectado en `req` las propiedades `tokenEmail` y `role`.
+ *
+ * Genera un nuevo token JWT con esos datos y lo devuelve al cliente.
+ *
+ * @async
+ * @function renewToken
+ * @param req - Objeto de solicitud de Express, con `tokenEmail` y `role` añadidos por middleware.
+ * @param res - Objeto de respuesta de Express.
+ * @returns {Promise} Responde al cliente con un nuevo token o un mensaje de error.
  */
 const renewToken = async (req, res) => {
     generateJWT({ email: req.tokenEmail, role: req.role })
