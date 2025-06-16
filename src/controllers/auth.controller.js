@@ -1,6 +1,7 @@
 // IMPORTS
 const bcrypt = require("bcryptjs")
 const userModel = require("../models/user.model");
+const { generateJWT } = require("../utils/JWTgenerate")
 
 // FUNCION login
 const login = async (req, res) => {
