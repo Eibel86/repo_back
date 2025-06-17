@@ -13,6 +13,10 @@ const filmQueries = {
         //Como LIKE, pero ignora mayúsculas y minúsculas.
         //% ignifica “cualquier cosa (0 o más caracteres)” antes o después del término.
 
+    findById: 
+        `SELECT * 
+        FROM films 
+        WHERE id = $1`,    
     //Consulta para obtener todas las películas. 
     getAllFilms: 
         `SELECT * 

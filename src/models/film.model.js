@@ -30,6 +30,12 @@ const findByTitle = async (title) => {
   return result.rows; // Devuelve array (vacío si no hay coincidencias)
 };
 
+const findById = async (id) => {
+  const result = await queryDB(queries.findById, [id]);
+  return result.rows[0] || null;
+};
+
+
 
 // FUNCION: Insertar película
 /**
@@ -67,6 +73,7 @@ const insertFilm = async (filmData) => {
 // EXPORTS
 module.exports = {
   findByTitle,
+  findById,
   insertFilm,
   getAll
 };

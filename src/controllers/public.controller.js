@@ -3,7 +3,7 @@ const filmModel = require('../models/film.model');
 const directorModel = require('../models/director.model');
 const genreModel = require('../models/genre.model');
 
-const { getAll, findByTitle } = require("../models/film.model");
+const { getAll, findByTitle, findById } = require("../models/film.model");
 
 
 
@@ -29,41 +29,75 @@ const getAllFilms = async (req, res) => {
 
 // GET FILM BY TITLE
 const getFilmByTitle = async (req, res) => {
-  try {
-    const { title } = req.params;
+    try {
+        const { title } = req.params;
 
-    // if (!title) {
-    //   return res.status(400).json({
-    //     ok: false,
-    //     error: 'Debes proporcionar un título de película.',
-    //   });
-    // }
+        // if (!title) {
+        //   return res.status(400).json({
+        //     ok: false,
+        //     error: 'Debes proporcionar un título de película.',
+        //   });
+        // }
 
-    const films = await findByTitle(title);
+        const films = await findByTitle(title);
 
-    if (!films || films.length === 0) {
-      return res.status(404).json({
+        if (!films || films.length === 0) {
+        return res.status(404).json({
+                ok: false,
+                error: 'No se encontraron películas con ese título.',
+            });
+        }
+
+        res.status(200).json({
+            ok: true,
+            data: films,
+        });
+
+
+    } catch (error) {
+        console.error('Error en getFilmByTitle:', error);
+        res.status(500).json({
         ok: false,
-        error: 'No se encontraron películas con ese título.',
-      });
+        error: 'Error interno al buscar las películas.',
+        });
     }
-
-    res.status(200).json({
-      ok: true,
-      data: films,
-    });
-  } catch (error) {
-    console.error('Error en getFilmByTitle:', error);
-    res.status(500).json({
-      ok: false,
-      error: 'Error interno al buscar las películas.',
-    });
-  }
 };
 
 // GET FILM BY ID
-const getFilmById = async (req, res) => { 
+const getFilmById = async (req, res) => {
+    try {
+        const { film_id } = req.params;
+        console.log(req.params)
+        // // Validación rápida
+        // if (!film_id || isNaN(film_id)) {
+        // return res.status(400).json({
+        //     ok: false,
+        //     error: 'Debes proporcionar un ID numérico de película.',
+        // });
+        // }
+        
 
+        const film = await findById(Number(film_id)); // Asegúrate de convertirlo a número si es necesario
+
+        if (!film) {
+        return res.status(404).json({
+            ok: false,
+            error: 'Película no encontrada.',
+        });
+        }
+
+        res.status(200).json({
+            ok: true,
+            data: film,
+        });
+
+    } catch (error) {
+        console.error('Error en getFilmById:', error);
+        res.status(500).json({
+            ok: false,
+            error: 'Error interno al buscar la película.',
+        });
+    }
 };
 
 
