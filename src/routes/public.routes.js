@@ -27,12 +27,12 @@ const {
 } = require("../middlewares/index.middlewares")
 
 // GET ALL FILMS todo: hacer todas las rutas bien
-//GET: http://localhost:5000/api/v1/films
-router.get("/films", getAllFilms);
+//GET: http://localhost:5000/api/v1/getallfilms
+router.get("/allfilms", getAllFilms);
 
 // GET FILM BY Title
-//GET: http://localhost:5000/api/v1/film/<id>
-router.get("/films/:title", [
+//GET: http://localhost:5000/api/v1/film/<title>
+router.get("/film/:title", [
     check("title", "invalid title").matches(LONG_BASIC_REGEX),
     validateInput
 ], getFilmByTitle);
@@ -44,12 +44,13 @@ router.get("/film/:id", [
     validateInput
 ], getFilmById);
 
-//CREATE FILM
-//POST: http://localhost:5000/api/v1/films
-router.post("/films", [
+//CREATE FILM (checked: ok)
+// TODO: revisar los métodos de express
+//POST: http://localhost:5000/api/v1/createfilm
+router.post("/createfilm", [
     check("full_title", "invalid title").matches(LONG_BASIC_REGEX),
     check("image_url", "invalid image").matches(URL_REGEX),
-    check("relase_date", "invalid relase_date").isDate(),
+    check("release_date", "invalid relase_date").isDate(),
     check("duration", "invalid duration").isTime(),
     check("synopsis", "invalid synopsis").matches(TEXT_BASIC_REGEX),
     check("director_name", "invalid name director").matches(BASIC_REGEX),
@@ -59,12 +60,12 @@ router.post("/films", [
 
 
 //UPDATE FILM BY ID
-//PUT: http://localhost:5000/api/v1/films
-router.put("/films", [
+//PUT: http://localhost:5000/api/v1/updatefilm
+router.put("/updatefilm", [
     check("id", "invalid id").matches(NUMBER_REGEX),
     check("full_title", "invalid title").matches(LONG_BASIC_REGEX),
     check("image_url", "invalid image").matches(URL_REGEX),
-    check("relase_date", "invalid relase_date").isDate(),
+    check("release_date", "invalid relase_date").isDate(),
     check("duration", "invalid duration").isTime(),
     check("synopsis", "invalid synopsis").matches(TEXT_BASIC_REGEX),
     check("director_name", "invalid name director").matches(BASIC_REGEX),
@@ -73,8 +74,8 @@ router.put("/films", [
 ], updateFilmById);
 
 //DELETE FILM BY ID
-//DELETE: http://localhost:5000/api/v1/films/<id>
-router.delete("/films/:id", [
+//DELETE: http://localhost:5000/api/v1/film/<id>
+router.delete("/film/:id", [
     check("id", "invalid id").matches(NUMBER_REGEX),
     validateInput
 ], deleteFilmById);
