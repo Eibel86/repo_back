@@ -1,4 +1,5 @@
 const { queryDB } = require("./DBquery");
+const bcrypt = require("bcryptjs");
 
 const initDB = async () => {
     try {
