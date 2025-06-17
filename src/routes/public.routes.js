@@ -39,8 +39,8 @@ router.get("/film/search/:title", [
 
 // GET FILM BY ID
 //GET: http://localhost:5000/api/v1/film/<id>
-router.get("/film/searching/:id", [
-    check("id", "invalid id").matches(NUMBER_REGEX),
+router.get("/film/searching/:film_id", [
+    check("film_id", "invalid id").matches(NUMBER_REGEX),
     validateInput
 ], getFilmById);
 
@@ -61,15 +61,15 @@ router.post("/createfilm", [
 
 //UPDATE FILM BY ID
 //PUT: http://localhost:5000/api/v1/updatefilm
-router.put("/updatefilm/:id", [
-    check("id", "invalid id").matches(NUMBER_REGEX),
-    check("full_title", "invalid title").matches(LONG_BASIC_REGEX),
-    check("image_url", "invalid image").matches(URL_REGEX),
-    check("release_date", "invalid relase_date").isDate(),
-    check("duration", "invalid duration").isTime(),
-    check("synopsis", "invalid synopsis").matches(TEXT_BASIC_REGEX),
-    check("director_name", "invalid name director").matches(BASIC_REGEX),
-    check("genre_name", "invalid name genre").matches(BASIC_REGEX),
+router.put("/updatefilm/:film_id", [
+    // check("id", "invalid id").matches(NUMBER_REGEX),
+    // check("full_title", "invalid title").matches(LONG_BASIC_REGEX),
+    // check("image_url", "invalid image").matches(URL_REGEX),
+    // check("release_date", "invalid relase_date").isDate(),
+    // check("duration", "invalid duration").isTime(),
+    // check("synopsis", "invalid synopsis").matches(TEXT_BASIC_REGEX),
+    // check("director_name", "invalid name director").matches(BASIC_REGEX),
+    // check("genre_name", "invalid name genre").matches(BASIC_REGEX),
     validateInput
 ], updateFilmById);
 

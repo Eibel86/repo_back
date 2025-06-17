@@ -21,21 +21,28 @@ const getAll = async () => {
  * @param {string} title - El título completo de la película.
  * @returns {Promise <Object | null>} Película encontrada o null si no existe.
  */
-const findByTitle = async (title) => {
+const findByTitleAll = async (title) => {
   const result = await queryDB(
-    queries.findByTitle,
+    queries.findByTitleAll,
     [`%${title}%`] // coincidencia parcial
     //Separar la lógica de búsqueda del texto de la estructura de la query, y así mantener la consulta reutilizable y segura.
   );
   return result.rows; // Devuelve array (vacío si no hay coincidencias)
 };
 
+const findByTitleOne = async (title) => {
+  const result = await queryDB(
+    queries.findByTitleOne,
+    [title]                 
+  );
+  return result.rows[0];
+};
+
+// FUNCION: Buscar película por id
 const findById = async (id) => {
   const result = await queryDB(queries.findById, [id]);
   return result.rows[0] || null;
 };
-
-
 
 // FUNCION: Insertar película
 /**
@@ -66,14 +73,38 @@ const insertFilm = async (filmData) => {
   return result.rows[0]; //Devuelve la primera fila del resultado (la peli recién insertada)
 };
 
-
+// FUNCION: Actualizar película por id
+const updateById = async ({
+    film_id,
+    director_id,
+    genre_id,
+    full_title,
+    image_url,
+    release_date,
+    duration,
+    synopsis
+  }) => {
+    const result = await queryDB(queries.updateById, [
+      director_id,
+      genre_id,
+      full_title,
+      image_url,
+      release_date,
+      duration,
+      synopsis,
+      film_id // al final porque es WHERE film_id = $8
+    ]);
+    return result.rows[0] || null;
+  };
 
 
 
 // EXPORTS
 module.exports = {
-  findByTitle,
+  getAll,
+  findByTitleAll,
+  findByTitleOne,
   findById,
   insertFilm,
-  getAll
+  updateById
 };

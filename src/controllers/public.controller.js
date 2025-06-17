@@ -3,12 +3,12 @@ const filmModel = require('../models/film.model');
 const directorModel = require('../models/director.model');
 const genreModel = require('../models/genre.model');
 
-const { getAll, findByTitle, findById } = require("../models/film.model");
+const { getAll, findByTitleAll, findByTitleOne, findById, updateById } = require("../models/film.model");
 
 
 
 
-// GET ALL FILMS (WIP ABEL)
+// CONTROLADOR: GET ALL FILMS
 const getAllFilms = async (req, res) => {
     try {
         const films = await getAll();
@@ -26,20 +26,11 @@ const getAllFilms = async (req, res) => {
     }
 };
 
-
-// GET FILM BY TITLE
+// CONTROLADOR: GET FILM BY TITLE
 const getFilmByTitle = async (req, res) => {
     try {
         const { title } = req.params;
-
-        // if (!title) {
-        //   return res.status(400).json({
-        //     ok: false,
-        //     error: 'Debes proporcionar un título de película.',
-        //   });
-        // }
-
-        const films = await findByTitle(title);
+        const films = await findByTitleAll(title);
 
         if (!films || films.length === 0) {
         return res.status(404).json({
@@ -63,20 +54,10 @@ const getFilmByTitle = async (req, res) => {
     }
 };
 
-// GET FILM BY ID
+// CONTROLADOR: GET FILM BY ID
 const getFilmById = async (req, res) => {
     try {
         const { film_id } = req.params;
-        console.log(req.params)
-        // // Validación rápida
-        // if (!film_id || isNaN(film_id)) {
-        // return res.status(400).json({
-        //     ok: false,
-        //     error: 'Debes proporcionar un ID numérico de película.',
-        // });
-        // }
-        
-
         const film = await findById(Number(film_id)); // Asegúrate de convertirlo a número si es necesario
 
         if (!film) {
@@ -99,8 +80,6 @@ const getFilmById = async (req, res) => {
         });
     }
 };
-
-
 
 // CONTROLADOR: CREATE FILM
 /**
@@ -129,7 +108,7 @@ const createFilm = async (req, res) => {
    
     try {
         // Verificar si la película ya existe
-        const existingFilm = await filmModel.findByTitle(full_title);
+        const existingFilm = await findByTitleOne(full_title);
         if (existingFilm) {
             return res.status(409).json({
                 ok: false,
@@ -170,12 +149,54 @@ const createFilm = async (req, res) => {
     }
 };
 
+// CONTROLADOR: FILM BY ID
+const updateFilmById = async (req, res) => {
+    try {
+        const { film_id } = req.params;
+        const {
+            full_title,
+            director_name,
+            genre_name,
+            image_url,
+            release_date,
+            duration,
+            synopsis
+        } = req.body;
 
+        const director_id = await directorModel.insertDirectorIfNotExists(director_name);
+        const genre_id = await genreModel.insertGenreIfNotExists(genre_name);
 
-//UPDATE FILM BY ID
-const updateFilmById = async (req, res) => { 
+        const updatedFilm = await updateById({
+            film_id: Number(film_id),
+            director_id,
+            genre_id,
+            full_title,
+            image_url,
+            release_date,
+            duration,
+            synopsis,
+        });
 
-}
+        if (!updatedFilm) {
+            return res.status(404).json({
+                ok: false,
+                error: "Película no encontrada o no actualizada",
+            });
+        }
+
+        res.status(200).json({
+            ok: true,
+            data: updatedFilm,
+        });
+    } catch (error) {
+        console.error("Error en updateFilmById:", error);
+        res.status(500).json({
+            ok: false,
+            error: "Error interno al actualizar la película.",
+        });
+    }
+};
+
 
 //DELETE FILM BY ID
 const deleteFilmById = async (req, res) => { 
