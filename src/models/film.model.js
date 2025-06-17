@@ -4,6 +4,7 @@ const queries = require('../queries/film.queries');
 
 
 
+
 /* MODELO DE PELÍCULAS
     Contiene funciones para interactuar con la base de datos relacionadas con películas, directores y géneros.*/
 
@@ -75,27 +76,25 @@ const insertFilm = async (filmData) => {
 
 // FUNCION: Actualizar película por id
 const updateById = async ({
-    film_id,
-    director_id,
-    genre_id,
-    full_title,
-    image_url,
-    release_date,
-    duration,
-    synopsis
+    film_id, director_id,
+    genre_id, full_title,
+    image_url, release_date,
+    duration, synopsis
   }) => {
     const result = await queryDB(queries.updateById, [
-      director_id,
-      genre_id,
-      full_title,
-      image_url,
-      release_date,
-      duration,
-      synopsis,
-      film_id // al final porque es WHERE film_id = $8
+      director_id, genre_id,
+      full_title, image_url,
+      release_date, duration,
+      synopsis, film_id // al final porque es WHERE film_id = $8
     ]);
     return result.rows[0] || null;
   };
+
+// FUNCIÓN: Borrar por id
+const deleteById = async (film_id) => {
+  const result = await queryDB(queries.deleteById, [film_id]);
+  return result.rows[0];
+};
 
 
 
@@ -106,5 +105,6 @@ module.exports = {
   findByTitleOne,
   findById,
   insertFilm,
-  updateById
+  updateById,
+  deleteById
 };

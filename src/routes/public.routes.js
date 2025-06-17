@@ -75,10 +75,13 @@ router.put("/updatefilm/:film_id", [
 
 //DELETE FILM BY ID
 //DELETE: http://localhost:5000/api/v1/film/<id>
-router.delete("/film/:id", [
-    check("id", "invalid id").matches(NUMBER_REGEX),
+router.delete("/deletefilm/:film_id", [
+    check("film_id", "invalid id").matches(NUMBER_REGEX),
     validateInput
 ], deleteFilmById);
 
 
+
+
+// EXPORTS
 module.exports = router;

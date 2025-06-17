@@ -3,7 +3,7 @@ const filmModel = require('../models/film.model');
 const directorModel = require('../models/director.model');
 const genreModel = require('../models/genre.model');
 
-const { getAll, findByTitleAll, findByTitleOne, findById, updateById } = require("../models/film.model");
+const { getAll, findByTitleAll, findByTitleOne, findById, updateById, deleteById } = require("../models/film.model");
 
 
 
@@ -197,11 +197,33 @@ const updateFilmById = async (req, res) => {
     }
 };
 
-
 //DELETE FILM BY ID
-const deleteFilmById = async (req, res) => { 
-    
-}
+const deleteFilmById = async (req, res) => {
+    const { film_id } = req.params;
+
+    try {
+        const deleted = await filmModel.deleteById(Number(film_id));
+
+        if (!deleted) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'Película no encontrada',
+            });
+        }
+
+        return res.status(200).json({
+            ok: true,
+            msg: 'Película eliminada correctamente',
+        });
+
+    } catch (error) {
+        console.error('Error al eliminar la película:', error);
+        return res.status(500).json({
+            ok: false,
+            msg: 'Error interno al eliminar la película',
+        });
+    }
+};
 
 
 module.exports = {

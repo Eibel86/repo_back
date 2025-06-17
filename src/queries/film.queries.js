@@ -75,8 +75,12 @@ const filmQueries = {
             duration = $6,
             synopsis = $7
         WHERE film_id = $8
-        RETURNING *;
-    `,
+        RETURNING *;`,
+
+    deleteById: `
+        DELETE FROM films 
+        WHERE film_id = $1 
+        RETURNING *;`,
 };
 
 
