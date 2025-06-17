@@ -15,8 +15,8 @@ const queries = require('../queries/film.queries');
  * @param {string} title - El título completo de la película.
  * @returns {Promise <Object | null>} Película encontrada o null si no existe.
  */
-const findByTitle = async (title) => {
-    const result = await queryDB(queries.findByTitle, [title]); //[title] es un array que se pasa como argumento para sustituir los placeholders.
+const findFilmByTitle = async (title) => {
+    const result = await queryDB(queries.findFilmByTitle, [title]); //[title] es un array que se pasa como argumento para sustituir los placeholders.
     return result.rows[0] || null; //Si no encurntra película devuelve null
 };
 
@@ -56,6 +56,6 @@ const insertFilm = async (filmData) => {
 
 // EXPORTS
 module.exports = {
-  findByTitle,
+  findFilmByTitle,
   insertFilm,
 };

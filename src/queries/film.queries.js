@@ -6,7 +6,7 @@
  */
 const filmQueries = {
     //Consulta para obtener una película por su título completo.
-    findByTitle: 
+    findFilmByTitle: 
         `SELECT * 
         FROM films 
         WHERE full_title = $1`,

@@ -52,7 +52,7 @@ const createFilm = async (req, res) => {
    
     try {
         // Verificar si la película ya existe
-        const existingFilm = await filmModel.findByTitle(full_title);
+        const existingFilm = await filmModel.findFilmByTitle(full_title);
         if (existingFilm) {
             return res.status(409).json({
                 ok: false,
