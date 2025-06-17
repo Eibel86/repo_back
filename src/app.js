@@ -10,6 +10,14 @@ app.use(express.urlencoded());
 app.use(express.json());
 
 
+//coors
+const frontUrl = process.env.FRONT_URL || "http://localhost:4000";
+const whiteList = [frontUrl];
+app.use(cors({
+    origin: whiteList
+}))
+
+
 app.use("/auth", authRoutes);
 
 app.use("/api/v1", publicRoutes);
