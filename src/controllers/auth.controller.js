@@ -21,7 +21,6 @@ const { generateJWT } = require("../utils/JWTgenerate")
  */
 const login = async (req, res) => {
     const { email, password } = req.body;
-
     try {
         //1. Buscar al usuario por email
         const user = await userModel.findByEmail(email);
@@ -50,14 +49,14 @@ const login = async (req, res) => {
 
         //5. Respuesta exitosa
         return res.status(200).json({
-            message: "Login exitoso",
-            token
+            message: "Login exitoso"
+            // token
         });
 
     } catch (error) {
         console.log("Error en login:", error);
         return res.status(500).json({
-            error: "Erros interno del servidor"
+            error: "Errores interno del servidor"
         });
     }
 };
