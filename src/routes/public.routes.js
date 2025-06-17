@@ -26,20 +26,20 @@ const {
     validateInput
 } = require("../middlewares/index.middlewares")
 
-// GET ALL FILMS todo: hacer todas las rutas bien
+// GET ALL FILMS
 //GET: http://localhost:5000/api/v1/getallfilms
 router.get("/allfilms", getAllFilms);
 
 // GET FILM BY Title
 //GET: http://localhost:5000/api/v1/film/<title>
-router.get("/film/:title", [
+router.get("/film/search/:title", [
     check("title", "invalid title").matches(LONG_BASIC_REGEX),
     validateInput
 ], getFilmByTitle);
 
 // GET FILM BY ID
 //GET: http://localhost:5000/api/v1/film/<id>
-router.get("/film/:id", [
+router.get("/film/searching/:id", [
     check("id", "invalid id").matches(NUMBER_REGEX),
     validateInput
 ], getFilmById);
@@ -61,7 +61,7 @@ router.post("/createfilm", [
 
 //UPDATE FILM BY ID
 //PUT: http://localhost:5000/api/v1/updatefilm
-router.put("/updatefilm", [
+router.put("/updatefilm/:id", [
     check("id", "invalid id").matches(NUMBER_REGEX),
     check("full_title", "invalid title").matches(LONG_BASIC_REGEX),
     check("image_url", "invalid image").matches(URL_REGEX),

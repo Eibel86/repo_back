@@ -6,10 +6,18 @@
  */
 const filmQueries = {
     //Consulta para obtener una película por su título completo.
-    findFilmByTitle: 
+    findByTitle: 
         `SELECT * 
         FROM films 
-        WHERE full_title = $1`,
+        WHERE full_title ILIKE $1`, 
+        //Como LIKE, pero ignora mayúsculas y minúsculas.
+        //% ignifica “cualquier cosa (0 o más caracteres)” antes o después del término.
+
+    //Consulta para obtener todas las películas. 
+    getAllFilms: 
+        `SELECT * 
+        FROM films`,
+
     //Consulta para insertar una nueva peli en la bbdd. Devuelve la peli insertada. 
     insertFilm: 
         `INSERT INTO films 

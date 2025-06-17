@@ -7,6 +7,12 @@ const queries = require('../queries/film.queries');
 /* MODELO DE PELÍCULAS
     Contiene funciones para interactuar con la base de datos relacionadas con películas, directores y géneros.*/
 
+// FUNCIÓN: Conseguir todas las películas
+const getAll = async () => {
+  const result = await queryDB(queries.getAllFilms);
+  return result.rows;
+};
+    
 // FUNCION: Buscar película por título
 /**
  * Busca una película por su título completo.
@@ -15,9 +21,13 @@ const queries = require('../queries/film.queries');
  * @param {string} title - El título completo de la película.
  * @returns {Promise <Object | null>} Película encontrada o null si no existe.
  */
-const findFilmByTitle = async (title) => {
-    const result = await queryDB(queries.findFilmByTitle, [title]); //[title] es un array que se pasa como argumento para sustituir los placeholders.
-    return result.rows[0] || null; //Si no encurntra película devuelve null
+const findByTitle = async (title) => {
+  const result = await queryDB(
+    queries.findByTitle,
+    [`%${title}%`] // coincidencia parcial
+    //Separar la lógica de búsqueda del texto de la estructura de la query, y así mantener la consulta reutilizable y segura.
+  );
+  return result.rows; // Devuelve array (vacío si no hay coincidencias)
 };
 
 
@@ -56,6 +66,7 @@ const insertFilm = async (filmData) => {
 
 // EXPORTS
 module.exports = {
-  findFilmByTitle,
+  findByTitle,
   insertFilm,
+  getAll
 };
