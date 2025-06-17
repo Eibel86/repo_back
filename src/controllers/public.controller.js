@@ -1,5 +1,7 @@
 // IMPORTS
-const filmModel = require("../models/film.model");
+const filmModel = require('../models/film.model');
+const directorModel = require('../models/director.model');
+const genreModel = require('../models/genre.model');
 
 
 
@@ -45,17 +47,8 @@ const createFilm = async (req, res) => {
         image_url,
         release_date,
         duration,
-        synopsis = null, //Asignado por defecto
+        synopsis,
     } = req.body;
-
-    /* Validación básica de campos obligatorios
-        if (!full_title || !director_name || !genre_name || !image_url || !release_date || !duration) {
-            return res.status(400).json({
-            ok: false,
-            msg: 'Faltan campos obligatorios',
-            });
-        }
-    */
    
     try {
         // Verificar si la película ya existe
@@ -68,10 +61,10 @@ const createFilm = async (req, res) => {
         }
 
         // Insertar director si no existe y obtener su id
-        const director_id = await filmModel.insertDirectorIfNotExists(director_name); //Busca el director por nombre y lo inserta si no lo encuentra
+        const director_id = await directorModel.insertDirectorIfNotExists(director_name); //Busca el director por nombre y lo inserta si no lo encuentra
 
         // Insertar género si no existe y obtener su id
-        const genre_id = await filmModel.insertGenreIfNotExists(genre_name); //Busca el genero por nombre y lo inserta si no existe
+        const genre_id = await genreModel.insertGenreIfNotExists(genre_name); //Busca el genero por nombre y lo inserta si no existe
 
         // Insertar la película. Crea el objeto con todos los datos. 
         const newFilm = await filmModel.insertFilm({

@@ -48,13 +48,13 @@ router.get("/film/:id", [
 // TODO: revisar los métodos de express
 //POST: http://localhost:5000/api/v1/createfilm
 router.post("/createfilm", [
-    check("full_title", "invalid title").matches(LONG_BASIC_REGEX),
-    check("image_url", "invalid image").matches(URL_REGEX),
-    check("release_date", "invalid relase_date").isDate(),
-    check("duration", "invalid duration").isTime(),
-    check("synopsis", "invalid synopsis").matches(TEXT_BASIC_REGEX),
-    check("director_name", "invalid name director").matches(BASIC_REGEX),
-    check("genre_name", "invalid name genre").matches(BASIC_REGEX),
+    // check("full_title", "invalid title").matches(LONG_BASIC_REGEX),
+    // check("image_url", "invalid image").matches(URL_REGEX),
+    // check("release_date", "invalid relase_date").isDate(),
+    // check("duration", "invalid duration").isTime(),
+    // check("synopsis", "invalid synopsis").matches(TEXT_BASIC_REGEX),
+    // check("director_name", "invalid name director").matches(BASIC_REGEX),
+    // check("genre_name", "invalid name genre").matches(BASIC_REGEX),
     validateInput
 ], createFilm);
 

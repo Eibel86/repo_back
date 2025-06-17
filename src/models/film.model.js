@@ -20,40 +20,6 @@ const findByTitle = async (title) => {
     return result.rows[0] || null; //Si no encurntra película devuelve null
 };
 
-// FUNCION: Insertar nuevo director si no existe
-/**
- * Inserta un nuevo director si no existe ya en la base de datos.
- * 
- * @param {string} name - Nombre del director.
- * @returns {Promise <number>} ID del director (existente o recién creado).
- */
-const insertDirectorIfNotExists = async (name) => {
-  let director = await queryDB(queries.findDirectorByName, [name]); //Consulta SQL. [name] es un array que se pasa como argumento para sustituir los placeholders.
-  if (director.rows.length > 0) return director.rows[0].director_id; //Evita inserciones duplicadas. 
-
-  const insertResult = await queryDB(queries.insertDirector, [name]); //Si no hay ningún director se hace la inserción
-
-  return insertResult.rows[0].director_id; // Devuelve el id del nuevo director insertado
-};
-
-// FUNCION: Insertar género si no existe
-/**
- * Inserta un nuevo género si no existe ya en la base de datos.
- * Busca un género de película por nombre en la base de datos.
- * Si ya existe, devuelve su genre_id.
- * Si no existe, lo inserta y luego devuelve el genre_id recién creado.
- * 
- * @param {string} name - Nombre del género.
- * @returns {Promise <number>} ID del género (existente o recién creado).
- */
-const insertGenreIfNotExists = async (name) => {
-  let genre = await queryDB(queries.findGenreByName, [name]); //Consulta SQL para saber si ya existe un género con ese nombre
-  if (genre.rows.length > 0) return genre.rows[0].genre_id; //Si existe al menos un resultado (ya hay un género con ese nombre), devuelve el género
-
-  const insertResult = await queryDB(queries.insertGenre, [name]); //Si no existe se inserta el nuevo género en la BBDD
-  return insertResult.rows[0].genre_id; //Devuelve el ID del género recién insertado
-};
-
 
 // FUNCION: Insertar película
 /**
@@ -91,7 +57,5 @@ const insertFilm = async (filmData) => {
 // EXPORTS
 module.exports = {
   findByTitle,
-  insertDirectorIfNotExists,
-  insertGenreIfNotExists,
   insertFilm,
 };
