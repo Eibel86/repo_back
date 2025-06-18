@@ -136,11 +136,13 @@ const createFilm = async (req, res) => {
         full_title,
         director_name,
         genre_name,
-        image_url,
+        image,
         release_date,
         duration,
         synopsis,
     } = req.body;
+
+    const image_url = req.file.path;
 
     try {
         // Verificar si la película ya existe

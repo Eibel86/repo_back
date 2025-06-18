@@ -25,7 +25,7 @@ const {
 } = require("../utils/regexLibrary")
 
 const { validateInput } = require("../middlewares/index.middlewares")
-
+const upload = require("../middlewares/upload.middleware");
 
 
 
@@ -58,6 +58,7 @@ router.get("/film/searching/:film_id", [
 // TODO: revisar los métodos de express
 //POST: http://localhost:5000/api/v1/createfilm
 router.post("/createfilm", [
+    upload.single("image"),
     check("full_title", "invalid title").notEmpty()
         .withMessage('El título no puede estar vacío')
         .isLength({ min: 2, max: 100 })
