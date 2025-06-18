@@ -315,6 +315,23 @@ const createFavourite = async (req, res) => {
 }
 
 
+const getFavouritesOfUser = async (req, res) => {
+    const { userId } = req.params;
+    try {
+        const favourites = await favouriteModel.getAllFavouriteFilmsByUserId(userId)
+        return res.status(202).json({
+            ok: true,
+            favourites
+        })
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            ok: false,
+            msg: error
+        })
+    }
+}
+
 // EXPORTS
 module.exports = {
     getAllFilms,
@@ -323,5 +340,6 @@ module.exports = {
     createFilm,
     updateFilmById,
     deleteFilmById,
-    createFavourite
+    createFavourite,
+    getFavouritesOfUser
 }
