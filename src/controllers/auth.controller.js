@@ -52,6 +52,7 @@ const login = async (req, res) => {
         return res.status(200).json({
             message: "Login exitoso",
             token
+
         });
 
     } catch (error) {
@@ -78,7 +79,7 @@ const login = async (req, res) => {
  * @returns {Promise} Responde al cliente con un JSON (usuario creado o error). Sólo ejecuta la lógica y termina. 
  */
 const registry = async (req, res) => {
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
 
     try {
         //Verificar si el usuario ya existe
@@ -94,7 +95,8 @@ const registry = async (req, res) => {
         const newUser = await userModel.insertUser({
             name,
             email,
-            password: hashedPassword
+            password: hashedPassword,
+            role
         });
 
         res.status(201).json({
