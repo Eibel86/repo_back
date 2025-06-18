@@ -2,7 +2,8 @@
 const filmModel = require('../models/film.model');
 const directorModel = require('../models/director.model');
 const genreModel = require('../models/genre.model');
-const favouriteModel = require("../models/favourite.model")
+const favouriteModel = require("../models/favourite.model");
+const userModel = require("../models/user.model");
 
 const { getAll, findByTitleAll, findByTitleOne, findById, updateById, deleteById } = require("../models/film.model");
 
@@ -291,48 +292,99 @@ const deleteFilmById = async (req, res) => {
 };
 
 
+/**
+ * Crea un nuevo favorito para un usuario.
+ * Verifica si la película y el usuario existen, y si ya hay un favorito creado.
+ * 
+ * @param {Object} req - Objeto de solicitud de Express.
+ * @param {Object} res - Objeto de respuesta de Express.
+ * @returns {Object} - Respuesta con estado y datos del favorito creado.
+ */
 const createFavourite = async (req, res) => {
     const { userId, filmId } = req.body;
+
     try {
+        // Verifica si la película existe
+        const existingFilm = await findById(filmId);
+        if (!existingFilm) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'La película no existe',
+            });
+        }
+
+        // Verifica si el usuario existe
+        const existingUser = await userModel.findById(userId);
+        if (!existingUser) {
+            return res.status(404).json({
+                error: "El usuario no existe"
+            });
+        }
+
+        // Verifica si ya existe ese favorito
         let favourite = await favouriteModel.findFavouriteByUserFilmIds(userId, filmId);
         if (favourite) {
             return res.status(404).json({
                 ok: false,
-                msg: "ya existe el favorito"
-            })
+                msg: "Ya existe el favorito"
+            });
         }
-        favourite = await favouriteModel.insertFavourite(userId, filmId)
+
+        // Inserta el nuevo favorito
+        favourite = await favouriteModel.insertFavourite(userId, filmId);
+
         return res.status(202).json({
             ok: true,
             favourite
-        })
+        });
 
     } catch (error) {
-        console.log(error)
+        console.log(error);
         return res.status(500).json({
             ok: false,
             msg: error
-        })
+        });
     }
-}
+};
 
 
+
+/**
+ * Obtiene todas las películas favoritas de un usuario.
+ * Verifica si el usuario existe antes de buscar los favoritos.
+ * 
+ * @param {Object} req - Objeto de solicitud de Express, espera el userId en los parámetros.
+ * @param {Object} res - Objeto de respuesta de Express.
+ * @returns {Object} - Respuesta con estado y lista de películas favoritas del usuario.
+ */
 const getFavouritesOfUser = async (req, res) => {
     const { userId } = req.params;
+
     try {
-        const favourites = await favouriteModel.getAllFavouriteFilmsByUserId(userId)
+        // Verifica si el usuario existe
+        const existingUser = await userModel.findById(userId);
+        if (!existingUser) {
+            return res.status(404).json({
+                error: "El usuario no existe"
+            });
+        }
+
+        // Obtiene los favoritos del usuario
+        const favourites = await favouriteModel.getAllFavouriteFilmsByUserId(userId);
+
         return res.status(202).json({
             ok: true,
             favourites
-        })
+        });
+
     } catch (error) {
-        console.log(error)
+        console.log(error);
         return res.status(500).json({
             ok: false,
             msg: error
-        })
+        });
     }
-}
+};
 
 // EXPORTS
 module.exports = {

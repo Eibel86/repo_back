@@ -1,5 +1,5 @@
 const express = require("express");
-const path = require("path");
+
 require("dotenv").config();
 const { authRoutes, publicRoutes } = require("./routes/index.routes")
 const { createDB } = require("./utils/DBcreate")
