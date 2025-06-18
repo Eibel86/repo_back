@@ -2,6 +2,7 @@
 const filmModel = require('../models/film.model');
 const directorModel = require('../models/director.model');
 const genreModel = require('../models/genre.model');
+const favouriteModel = require("../models/favourite.model")
 
 const { getAll, findByTitleAll, findByTitleOne, findById, updateById, deleteById } = require("../models/film.model");
 
@@ -31,7 +32,7 @@ const getAllFilms = async (req, res) => {
         });
     } catch (error) {
         console.error("Error en getAllFilms:", error);
-            res.status(500).json({ //500 INTERNAL SERVER ERROR 
+        res.status(500).json({ //500 INTERNAL SERVER ERROR 
             ok: false,
             error: "Error al obtener las películas",
         });
@@ -96,10 +97,10 @@ const getFilmById = async (req, res) => {
         const film = await findById(Number(film_id)); //Asegúra la conversión a número por si fuese necesario
 
         if (!film) {
-        return res.status(404).json({ //404 NOT FOUND
-            ok: false,
-            error: 'Película no encontrada.',
-        });
+            return res.status(404).json({ //404 NOT FOUND
+                ok: false,
+                error: 'Película no encontrada.',
+            });
         }
 
         res.status(200).json({ //200 OK: respuesta exitosa
@@ -140,7 +141,7 @@ const createFilm = async (req, res) => {
         duration,
         synopsis,
     } = req.body;
-   
+
     try {
         // Verificar si la película ya existe
         const existingFilm = await findByTitleOne(full_title);
@@ -166,20 +167,20 @@ const createFilm = async (req, res) => {
             release_date,
             duration,
             synopsis,
-        }); 
+        });
 
         //Devuelve una respuesta exitosa con los datos de la peli recién creada
         return res.status(201).json({ //201 CREATED 
             ok: true,
             msg: 'Película creada con éxito',
             film: newFilm,
-    });
+        });
 
     } catch (error) {
-            console.error('Error en createFilm:', error);
-            return res.status(500).json({ //500 INTERNAL SERVER ERROR
-                ok: false,
-                msg: 'Error interno del servidor',
+        console.error('Error en createFilm:', error);
+        return res.status(500).json({ //500 INTERNAL SERVER ERROR
+            ok: false,
+            msg: 'Error interno del servidor',
         });
     }
 };
@@ -225,7 +226,7 @@ const updateFilmById = async (req, res) => {
         });
 
         if (!updatedFilm) { // Si no se ha actualiza ninguna peli:
-            return res.status(404).json({ 
+            return res.status(404).json({
                 ok: false,
                 error: "Película no encontrada o no actualizada",
             });
@@ -288,6 +289,11 @@ const deleteFilmById = async (req, res) => {
 };
 
 
+const createFavourite = async (req, res) => {
+    const { useId, filmId } = req.body;
+    favouriteModel.findFavouriteByUserFilmIds()
+    favouriteModel.insertFavourite
+}
 
 
 // EXPORTS
@@ -297,5 +303,6 @@ module.exports = {
     getFilmById,
     createFilm,
     updateFilmById,
-    deleteFilmById
+    deleteFilmById,
+    createFavourite
 }

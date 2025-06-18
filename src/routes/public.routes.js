@@ -10,7 +10,8 @@ const {
     getFilmById,
     createFilm,
     updateFilmById,
-    deleteFilmById
+    deleteFilmById,
+    createFavourite
 } = require("../controllers/public.controller");
 
 const {
@@ -84,6 +85,6 @@ router.delete("/deletefilm/:film_id", [
 
 
 
-
+router.delete("/addFavourite", createFavourite);
 // EXPORTS
 module.exports = router;
