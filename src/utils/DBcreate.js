@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS films (
     full_title VARCHAR(200) NOT NULL,
     image_url VARCHAR(300) NOT NULL,
     release_date DATE NOT NULL,
-    duration TIME NOT NULL,
+    duration INTEGER NOT NULL,
     synopsis VARCHAR(600)
 );
 
