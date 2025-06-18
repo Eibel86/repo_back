@@ -290,9 +290,28 @@ const deleteFilmById = async (req, res) => {
 
 
 const createFavourite = async (req, res) => {
-    const { useId, filmId } = req.body;
-    favouriteModel.findFavouriteByUserFilmIds()
-    favouriteModel.insertFavourite
+    const { userId, filmId } = req.body;
+    try {
+        let favourite = await favouriteModel.findFavouriteByUserFilmIds(userId, filmId);
+        if (favourite) {
+            return res.status(404).json({
+                ok: false,
+                msg: "ya existe el favorito"
+            })
+        }
+        // favourite = await favouriteModel.insertFavourite(userId, filmId)
+        return res.status(202).json({
+            ok: true,
+            favourite
+        })
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            ok: false,
+            msg: error
+        })
+    }
 }
 
 

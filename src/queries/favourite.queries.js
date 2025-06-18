@@ -18,3 +18,5 @@ const favouriteQueries = {
         INNER JOIN films ON films.film_id = favourites.film_id
         WHERE users.email = $1`,
 }
+
+module.exports = favouriteQueries;
