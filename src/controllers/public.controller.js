@@ -299,7 +299,7 @@ const createFavourite = async (req, res) => {
                 msg: "ya existe el favorito"
             })
         }
-        // favourite = await favouriteModel.insertFavourite(userId, filmId)
+        favourite = await favouriteModel.insertFavourite(userId, filmId)
         return res.status(202).json({
             ok: true,
             favourite

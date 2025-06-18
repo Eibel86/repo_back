@@ -10,6 +10,7 @@ const favouriteQueries = {
     getFavouriteByUserFilmIds:
         `SELECT films.full_title
         FROM favourites
+        INNER JOIN films ON films.film_id = favourites.film_id
         WHERE favourites.user_id = $1 AND favourites.film_id = $2`,
     getFavouritesByUserEmail:
         `SELECT films.full_title
