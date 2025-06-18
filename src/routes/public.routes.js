@@ -1,3 +1,4 @@
+// IMPORTS
 const { Router } = require("express");
 const { check } = require('express-validator');
 
@@ -19,12 +20,13 @@ const {
     TEXT_BASIC_REGEX,
     NUMBER_REGEX,
     URL_REGEX
-
 } = require("../utils/regexLibrary")
 
-const {
-    validateInput
-} = require("../middlewares/index.middlewares")
+const { validateInput } = require("../middlewares/index.middlewares")
+
+
+
+
 
 // GET ALL FILMS
 //GET: http://localhost:5000/api/v1/getallfilms
