@@ -97,13 +97,16 @@ const registry = async (req, res) => {
             role
         });
 
+        //4. Si todo coincide generar token JWT
+        const token = await generateJWT({
+            uid: newUser.user_id,
+            email: newUser.email,
+            role: newUser.role
+        });
+
         res.status(201).json({
             message: "Usuario registrado con éxito",
-            user: {
-                id: newUser.user_id,
-                name: newUser.name,
-                email: newUser.email
-            }
+            token
         });
 
     } catch (error) {
