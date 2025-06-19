@@ -18,6 +18,12 @@ const findByEmail = async (email) => {
   return result.rows[0]; // Devuelve el primer usuario que coincida con el email
 };
 
+const findById = async (userId) => {
+  const result = await queryDB(userQueries.findById, [userId]); // Ejecuta la consulta SQL con el email como parámetro
+  return result.rows[0]; // Devuelve el primer usuario que coincida con el email
+};
+
+
 //FUNCION insertar usuario: 
 /**
  * Inserta un nuevo usuario en la base de datos y devuelve el usuario recién creado.
@@ -31,7 +37,7 @@ const findByEmail = async (email) => {
  * @param {string} [user.role="user"] - Rol del usuario (por defecto es "user").
  * @returns {Promise <Object>} El usuario insertado con todos sus campos (incluyendo id y fecha de registro).
  */
-const insertUser = async ({ name, email, password, role = "user" }) => { 
+const insertUser = async ({ name, email, password, role = "user" }) => {
   const result = await queryDB(userQueries.insertUser, [
     name,
     email,
@@ -46,6 +52,7 @@ const insertUser = async ({ name, email, password, role = "user" }) => {
 
 // EXPORTS
 module.exports = {
-    findByEmail,
-    insertUser
+  findByEmail,
+  findById,
+  insertUser
 };

@@ -1,4 +1,5 @@
 const express = require("express");
+
 require("dotenv").config();
 const { authRoutes, publicRoutes } = require("./routes/index.routes")
 const app = express();
@@ -12,6 +13,7 @@ app.use(express.json());
 
 const whiteList = ["http://localhost:5000", "http://localhost:4000"]
 app.use(cors())
+app.use("/uploads", express.static("uploads"));
 
 app.use("/auth", authRoutes);
 
