@@ -37,7 +37,7 @@ const initDB = async () => {
                 full_title VARCHAR(200) NOT NULL,
                 image_url VARCHAR(300) NOT NULL,
                 release_date DATE NOT NULL,
-                duration INTERGER NOT NULL,
+                duration INTEGER NOT NULL,
                 synopsis VARCHAR(600)
             );
 
@@ -68,8 +68,8 @@ const initDB = async () => {
 
         await queryDB(`INSERT INTO films (full_title, director_id, genre_id, image_url, release_date, duration, synopsis)
                        VALUES 
-                       ('The Matrix', 1, 1, 'https://example.com/matrix.jpg', '1999-03-31', '02:16:00', 'A hacker discovers reality is a simulation.'),
-                       ('Inception', 2, 2, 'https://example.com/inception.jpg', '2010-07-16', '02:28:00', 'Dreams within dreams.')`);
+                       ('The Matrix', 1, 1, 'https://example.com/matrix.jpg', '1999-03-31', '120', 'A hacker discovers reality is a simulation.'),
+                       ('Inception', 2, 2, 'https://example.com/inception.jpg', '2010-07-16', '150', 'Dreams within dreams.')`);
 
         await queryDB(`INSERT INTO favourites (user_id, film_id)
                        VALUES (1, 1), (2, 2)`);
