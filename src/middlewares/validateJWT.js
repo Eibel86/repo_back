@@ -1,4 +1,5 @@
 const { verifyJWT } = require("../utils/JWTveryfy")
+const { generateJWT } = require("../utils/JWTgenerate")
 
 /**
  * Middleware para validar tokens JWT en las solicitudes HTTP.
@@ -19,18 +20,23 @@ const validateJWT = async (req, res, next) => {
         });
     }
     const token = authorization.split(" ")[1];
-    verifyJWT(token)
-        .then(resp => {
-            req.tokenEmail = resp.email;
-            req.role = resp.role;
-            next();
-        })
-        .catch(err => {
-            return res.status(404).json({
-                ok: false,
-                msg: err
-            });
-        })
+    try {
+        const playLoad = await verifyJWT(token);
+        const renewedToken = await generateJWT(playLoad.uid, playLoad.email, playLoad.role);
+        req.tokenEmail = playLoad.email;
+        req.role = playLoad.role;
+        req.renewedToken = renewedToken;
+        next();
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            ok: false,
+            msg: error
+        });
+    }
+
+
 }
 
 
