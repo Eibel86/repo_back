@@ -63,8 +63,6 @@ router.get("/film/searching/:film_id", [
 //POST: http://localhost:5000/api/v1/createfilm
 router.post("/createfilm", [
     upload.single("image"),
-    validateJWT,
-    validateRole("admin"),
     check("full_title", "invalid title").notEmpty()
         .withMessage('El título no puede estar vacío')
         .isLength({ min: 2, max: 100 })
