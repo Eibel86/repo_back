@@ -2,6 +2,7 @@
 const { Router } = require("express");
 const { check } = require('express-validator');
 
+
 const router = new Router();
 
 const {
@@ -23,16 +24,19 @@ const {
     NUMBER_REGEX,
     URL_REGEX
 } = require("../utils/regexLibrary")
+// MIDDLEWARES
+const { validateInput, validateJWT, upload, validateRole } = require("../middlewares/index.middlewares")
 
-const { validateInput } = require("../middlewares/index.middlewares")
-const upload = require("../middlewares/upload.middleware");
 
 
 
 
 // GET ALL FILMS
 //GET: http://localhost:5000/api/v1/getallfilms
-router.get("/allfilms", getAllFilms);
+router.get("/allfilms", [
+    validateJWT,
+    validateRole("user")
+], getAllFilms);
 
 // GET FILM BY Title
 //GET: http://localhost:5000/api/v1/film/<title>
@@ -59,6 +63,8 @@ router.get("/film/searching/:film_id", [
 //POST: http://localhost:5000/api/v1/createfilm
 router.post("/createfilm", [
     upload.single("image"),
+    validateJWT,
+    validateRole("admin"),
     check("full_title", "invalid title").notEmpty()
         .withMessage('El título no puede estar vacío')
         .isLength({ min: 2, max: 100 })

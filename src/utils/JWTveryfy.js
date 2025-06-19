@@ -1,18 +1,14 @@
 var jwt = require('jsonwebtoken');
 
-const verifyJWT = (token) => {
-    return new Promise((resolve, reject) => {
+const verifyJWT = async (token) => {
+    try {
         const privateKey = process.env.PRIVATE_KEY_JWB;
-        jwt.verify(token, privateKey, (err, decoded) => {
-            if (decoded) {
-                resolve(decoded);
-            }
-            else {
-                reject(err)
-            }
-        })
-    })
-}
+        const decoded = jwt.verify(token, privateKey);
+        return decoded;
+    } catch (error) {
+        throw error;
+    }
+};
 
 module.exports = {
     verifyJWT

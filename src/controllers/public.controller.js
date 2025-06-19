@@ -29,6 +29,7 @@ const getAllFilms = async (req, res) => {
 
         res.status(200).json({ //200 OK: solicitud exitosa, respuesta satisfactoria
             ok: true,
+            token: req.renewedToken,
             data: films,
         });
     } catch (error) {
@@ -137,7 +138,6 @@ const createFilm = async (req, res) => {
         full_title,
         director_name,
         genre_name,
-        image,
         release_date,
         duration,
         synopsis,
