@@ -49,8 +49,14 @@ const login = async (req, res) => {
 
         //5. Respuesta exitosa
         return res.status(200).json({
-            message: "Login exitoso",
-            token
+            message: "Login correcto",
+            token, // sigue enviando el token
+            user: {
+                id: user.user_id,
+                role: user.role,
+                name: user.name,
+                email: user.email
+            }
         });
 
     } catch (error) {
@@ -104,9 +110,16 @@ const registry = async (req, res) => {
             role: newUser.role
         });
 
+        // Enviar token y datos del usuario
         res.status(201).json({
             message: "Usuario registrado con éxito",
-            token
+            token,
+            user: {
+                id: newUser.user_id,
+                role: newUser.role,
+                name: newUser.name,
+                email: newUser.email
+            }
         });
 
     } catch (error) {
