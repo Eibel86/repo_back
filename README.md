@@ -19,6 +19,8 @@
     -"express"
     -"express-validator"
     -"jsonwebtoken"
+    -"pg"
+    
 ```shell
   npm i 
 ```
