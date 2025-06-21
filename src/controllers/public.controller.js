@@ -314,13 +314,15 @@ const createFavourite = async (req, res) => {
         }
 
         // Verifica si el usuario existe
+
         const existingUser = await userModel.findById(userId);
+
         if (!existingUser) {
             return res.status(404).json({
-                error: "El usuario no existe"
+                ok: false,
+                msg: "El usuario no existe"
             });
         }
-
         // Verifica si ya existe ese favorito
         let favourite = await favouriteModel.findFavouriteByUserFilmIds(userId, filmId);
         if (favourite) {
@@ -339,6 +341,7 @@ const createFavourite = async (req, res) => {
         });
 
     } catch (error) {
+
         console.log(error);
         return res.status(500).json({
             ok: false,
@@ -347,7 +350,54 @@ const createFavourite = async (req, res) => {
     }
 };
 
+const deleteFavourite = async (req, res) => {
+    const { userId, filmId } = req.body;
 
+    try {
+        // Verifica si la película existe
+        const existingFilm = await findById(filmId);
+        if (!existingFilm) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'La película no existe',
+            });
+        }
+
+        // Verifica si el usuario existe
+
+        const existingUser = await userModel.findById(userId);
+
+        if (!existingUser) {
+            return res.status(404).json({
+                ok: false,
+                msg: "El usuario no existe"
+            });
+        }
+        // Verifica si ya existe ese favorito
+        let favourite = await favouriteModel.findFavouriteByUserFilmIds(userId, filmId);
+        if (!favourite) {
+            return res.status(404).json({
+                ok: false,
+                msg: "No existe el favorito"
+            });
+        }
+
+        // Inserta el nuevo favorito
+        favourite = await favouriteModel.deleteFavourite(userId, filmId);
+        console.log("FAVORITO ELIMINADO")
+        return res.status(202).json({
+            ok: true
+        });
+
+    } catch (error) {
+
+        console.log(error);
+        return res.status(500).json({
+            ok: false,
+            msg: error
+        });
+    }
+};
 
 /**
  * Obtiene todas las películas favoritas de un usuario.
@@ -395,5 +445,6 @@ module.exports = {
     updateFilmById,
     deleteFilmById,
     createFavourite,
+    deleteFavourite,
     getFavouritesOfUser
 }

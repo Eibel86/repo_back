@@ -12,15 +12,21 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 const frontUrl = process.env.FRONT_URL || "http://localhost:4000"
 const whiteList = [frontUrl]
-app.use(cors())
+app.use(cors({
+    origin: whiteList
+}))
 app.use((req, res, next) => {
-    const allowedSources = whiteList.join(" ");
-    res.setHeader(
-        "Content-Security-Policy",
-        `default-src 'self'; img-src 'self' ${allowedSources} data:; script-src 'self' ${allowedSources}; style-src 'self' 'unsafe-inline' ${allowedSources};`
-    );
+    console.log(`➡️ ${req.method} ${req.originalUrl}`);
     next();
 });
+// app.use((req, res, next) => {
+//     const allowedSources = whiteList.join(" ");
+//     res.setHeader(
+//         "Content-Security-Policy",
+//         `default-src 'self'; img-src 'self' ${allowedSources} data:; script-src 'self' ${allowedSources}; style-src 'self' 'unsafe-inline' ${allowedSources};`
+//     );
+//     next();
+// });
 app.use("/uploads", express.static("uploads"));
 
 
