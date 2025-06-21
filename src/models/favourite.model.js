@@ -18,7 +18,14 @@ const insertFavourite = async (user_id, film_id) => {
         throw error;
     }
 };
-
+const deleteFavourite = async (user_id, film_id) => {
+    try {
+        const result = await queryDB(queries.deleteByUserIdAndFilmId, [user_id, film_id]);
+        return result.rows[0];
+    } catch (error) {
+        throw error;
+    }
+};
 
 const getAllFavouriteFilmsByUserId = async (user_id) => {
     try {
@@ -33,5 +40,6 @@ const getAllFavouriteFilmsByUserId = async (user_id) => {
 module.exports = {
     findFavouriteByUserFilmIds,
     insertFavourite,
+    deleteFavourite,
     getAllFavouriteFilmsByUserId
 }

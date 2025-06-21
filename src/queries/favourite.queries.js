@@ -13,10 +13,14 @@ const favouriteQueries = {
         INNER JOIN films ON films.film_id = favourites.film_id
         WHERE favourites.user_id = $1 AND favourites.film_id = $2`,
     getFavouritesByUserId:
-        `SELECT films.full_title
+        `SELECT *
         FROM favourites
         INNER JOIN films ON films.film_id = favourites.film_id
         WHERE favourites.user_id = $1`,
+    deleteByUserIdAndFilmId: `
+        DELETE FROM favourites 
+        WHERE user_id = $1 AND film_id = $2
+        RETURNING *;`,
 }
 
 module.exports = favouriteQueries;
