@@ -28,7 +28,7 @@ const login = async (req, res) => {
         //2. Si no existe el usuario
         if (!user) {
             return res.status(404).json({
-                error: "Usuario no encontrado"
+                error: "Usuario o contraseña incorrecta"
             });
         }
 
@@ -36,7 +36,7 @@ const login = async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.status(401).json({
-                error: "Contraseña incorrecta"
+                error: "Usuario o contraseña incorrecta"
             });
         }
 
