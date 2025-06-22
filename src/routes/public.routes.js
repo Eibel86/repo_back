@@ -2,7 +2,6 @@
 const { Router } = require("express");
 const { check } = require('express-validator');
 
-
 const router = new Router();
 
 const {
@@ -25,21 +24,21 @@ const {
     NUMBER_REGEX,
     URL_REGEX
 } = require("../utils/regexLibrary")
-// MIDDLEWARES
+
 const { validateInput, validateJWT, upload, validateRole } = require("../middlewares/index.middlewares")
 
 
 
 
 
-// GET ALL FILMS
+// RUTA: get all films
 //GET: http://localhost:5000/api/v1/getallfilms
 router.get("/allfilms", [
     validateJWT,
     validateRole("admin", "user")
 ], getAllFilms);
 
-// GET FILM BY Title
+// RUTA: get film by title
 //GET: http://localhost:5000/api/v1/film/<title>
 router.get("/film/search/:title", [
     validateJWT,
@@ -51,7 +50,7 @@ router.get("/film/search/:title", [
     validateInput
 ], getFilmByTitle);
 
-// GET FILM BY ID
+// RUTA: get film by id
 //GET: http://localhost:5000/api/v1/film/<id>
 router.get("/film/searching/:film_id", [
     validateJWT,
@@ -63,8 +62,7 @@ router.get("/film/searching/:film_id", [
     validateInput
 ], getFilmById);
 
-//CREATE FILM (checked: ok)
-// TODO: revisar los métodos de express
+// RUTA: create film
 //POST: http://localhost:5000/api/v1/createfilm
 router.post("/createfilm", [
     validateJWT,
@@ -95,8 +93,7 @@ router.post("/createfilm", [
     validateInput
 ], createFilm);
 
-
-//UPDATE FILM BY ID
+// RUTA: update film by id
 //PUT: http://localhost:5000/api/v1/updatefilm
 router.post("/updatefilm", [
     validateJWT,
@@ -131,7 +128,7 @@ router.post("/updatefilm", [
     validateInput
 ], updateFilmById);
 
-//DELETE FILM BY ID
+// RUTA: delete film by id
 //DELETE: http://localhost:5000/api/v1/film/<id>
 router.delete("/deletefilm/:film_id", [
     validateJWT,
@@ -145,6 +142,8 @@ router.delete("/deletefilm/:film_id", [
 
 
 
+
+// RUTA: añadir a favoritos
 router.post("/addFavourite", [
     validateJWT,
     validateRole("admin", "user"),
@@ -158,6 +157,7 @@ router.post("/addFavourite", [
         .withMessage("La id debe estar en formato numérico")
 ], createFavourite);
 
+// RUTA: eliminar favorito
 router.post("/deleteFavourite", [
     validateJWT,
     validateRole("admin", "user"),
@@ -171,6 +171,7 @@ router.post("/deleteFavourite", [
         .withMessage("La id debe estar en formato numérico")
 ], deleteFavourite);
 
+// RUTA: obtener favoritos por id de usuario
 router.get("/getFavourites/:userId", [
     validateJWT,
     validateRole("admin", "user"),
@@ -179,5 +180,10 @@ router.get("/getFavourites/:userId", [
         .isInt()
         .withMessage("La id debe estar en formato numérico")
 ], getFavouritesOfUser);
+
+
+
+
+
 // EXPORTS
 module.exports = router;

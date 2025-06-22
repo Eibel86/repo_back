@@ -1,3 +1,4 @@
+// IMPORTS
 const { Router } = require("express");
 const { check } = require('express-validator');
 
@@ -13,13 +14,13 @@ const {
     renewToken
 } = require("../controllers/auth.controller");
 
-
 const { PASS_REGEX } = require("../utils/regexLibrary")
-
 const router = new Router();
 
 
-//LOGIN
+
+
+// RUTA: login
 router.post("/login", [
     check("email", "invalid email").notEmpty()
         .withMessage('El email no puede estar vacío')
@@ -30,7 +31,9 @@ router.post("/login", [
     check("password", "invalid password").matches(PASS_REGEX),
     validateInput
 ], login)
-//REGISTRY
+
+
+// RUTA: registry
 router.post("/registry", [
     check("email", "invalid email").notEmpty()
         .withMessage('El email no puede estar vacío')
@@ -45,15 +48,23 @@ router.post("/registry", [
         .withMessage('El usuario debe tener entre 2 y 100 caracteres'),
     validateInput
 ], registry)
-//RENEWTOKEN
+
+
+//RUTA: renewtoken
 router.get("/renewToken", [
     validateJWT
 ], renewToken)
-//VALIDATE ADMIN ROLE
+
+
+// RUTA: validate admin role
 router.get("/validateAdminRole", [
     validateJWT,
     validateRole("Admin")
 ], login)
 
 
+
+
+
+// EXPORTS
 module.exports = router;

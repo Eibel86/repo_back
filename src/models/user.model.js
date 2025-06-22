@@ -4,7 +4,7 @@ const userQueries = require("../queries/user.queries"); // Importa la querie (co
 
 
 
-//FUNCION buscar por email
+// MODEL: buscar usuario por email
 /**
  * Busca un usuario en la base de datos por su email y lo devuelve.
  *
@@ -18,13 +18,23 @@ const findByEmail = async (email) => {
   return result.rows[0]; // Devuelve el primer usuario que coincida con el email
 };
 
+
+// MODEL: buscar usuario por id
+/**
+ * Busca un usuario por su ID.
+ *
+ * @async
+ * @function findById
+ * @param {number | string} userId - ID del usuario a buscar.
+ * @returns {Promise  <Object | null>} Objeto del usuario si se encuentra, o null si no existe.
+ */
 const findById = async (userId) => {
   const result = await queryDB(userQueries.findById, [userId]); // Ejecuta la consulta SQL con el email como parámetro
   return result.rows[0]; // Devuelve el primer usuario que coincida con el email
 };
 
 
-//FUNCION insertar usuario: 
+// MODEL: insertar usuario 
 /**
  * Inserta un nuevo usuario en la base de datos y devuelve el usuario recién creado.
  *
