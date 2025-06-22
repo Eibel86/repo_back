@@ -34,10 +34,7 @@ const { validateInput, validateJWT, upload, validateRole } = require("../middlew
 
 // GET ALL FILMS
 //GET: http://localhost:5000/api/v1/getallfilms
-router.get("/allfilms", [
-    validateJWT,
-    validateRole("user")
-], getAllFilms);
+router.get("/allfilms", getAllFilms);
 
 // GET FILM BY Title
 //GET: http://localhost:5000/api/v1/film/<title>
@@ -92,7 +89,8 @@ router.post("/createfilm", [
 
 //UPDATE FILM BY ID
 //PUT: http://localhost:5000/api/v1/updatefilm
-router.put("/updatefilm/:film_id", [
+router.post("/updatefilm", [
+    upload.single("image"),
     check("film_id", "invalid id").notEmpty()
         .withMessage('La id es obligatoria, en formato numerico')
         .isInt({ min: 1, max: 500 })
