@@ -49,7 +49,7 @@ const initDB = async () => {
         `);
 
         // 3. Hashear contraseñas
-        const password1 = await bcrypt.hash("password123", 10);
+        const password1 = await bcrypt.hash("Password123", 10);
         const password2 = await bcrypt.hash("Admin456", 10);
 
         // 4. Insertar datos ficticios

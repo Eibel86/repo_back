@@ -36,6 +36,7 @@ const getAllFilms = async (req, res) => {
         console.error("Error en getAllFilms:", error);
         res.status(500).json({ //500 INTERNAL SERVER ERROR 
             ok: false,
+            token: req.renewedToken,
             error: "Error al obtener las películas",
         });
     }
@@ -62,11 +63,13 @@ const getFilmByTitle = async (req, res) => {
         if (!films || films.length === 0) { //Si no hay pelis
             return res.status(404).json({ //404 NOT FOUND: el servidor no pudo encontrar el recurso solicitado por el cliente(navegador)
                 ok: false,
+                token: req.renewedToken,
                 error: 'No se encontraron películas con ese título.',
             });
         }
         res.status(200).json({ //200 OK: solicitud y respuesta exitosas
             ok: true,
+            token: req.renewedToken,
             data: films,
         });
 
@@ -75,6 +78,7 @@ const getFilmByTitle = async (req, res) => {
         console.error('Error en getFilmByTitle:', error);
         res.status(500).json({ //500 INTERNAL SERVER ERROR
             ok: false,
+            token: req.renewedToken,
             error: 'Error interno al buscar las películas.',
         });
     }
@@ -101,12 +105,14 @@ const getFilmById = async (req, res) => {
         if (!film) {
             return res.status(404).json({ //404 NOT FOUND
                 ok: false,
+                token: req.renewedToken,
                 error: 'Película no encontrada.',
             });
         }
 
         res.status(200).json({ //200 OK: respuesta exitosa
             ok: true,
+            token: req.renewedToken,
             data: film,
         });
 
@@ -114,6 +120,7 @@ const getFilmById = async (req, res) => {
         console.error('Error en getFilmById:', error);
         res.status(500).json({ //500 INTERNAL SERVER ERROR
             ok: false,
+            token: req.renewedToken,
             error: 'Error interno al buscar la película.',
         });
     }
@@ -151,6 +158,7 @@ const createFilm = async (req, res) => {
         if (existingFilm) {
             return res.status(409).json({
                 ok: false,
+                token: req.renewedToken,
                 msg: 'La película ya existe', //404 CONFLICT
             });
         }
@@ -175,6 +183,7 @@ const createFilm = async (req, res) => {
         //Devuelve una respuesta exitosa con los datos de la peli recién creada
         return res.status(201).json({ //201 CREATED 
             ok: true,
+            token: req.renewedToken,
             msg: 'Película creada con éxito',
             film: newFilm,
         });
@@ -230,6 +239,7 @@ const updateFilmById = async (req, res) => {
         if (!updatedFilm) { // Si no se ha actualiza ninguna peli:
             return res.status(404).json({
                 ok: false,
+                token: req.renewedToken,
                 error: "Película no encontrada o no actualizada",
             });
         }
@@ -273,12 +283,14 @@ const deleteFilmById = async (req, res) => {
         if (!deleted) { //Si no se elimina ninguna peli
             return res.status(404).json({
                 ok: false,
+                token: req.renewedToken,
                 msg: 'Película no encontrada',
             });
         }
 
         return res.status(200).json({
             ok: true,
+            token: req.renewedToken,
             msg: 'Película eliminada correctamente',
         });
 
@@ -286,6 +298,7 @@ const deleteFilmById = async (req, res) => {
         console.error('Error al eliminar la película:', error);
         return res.status(500).json({
             ok: false,
+            token: req.renewedToken,
             msg: 'Error interno al eliminar la película',
         });
     }
@@ -309,6 +322,7 @@ const createFavourite = async (req, res) => {
         if (!existingFilm) {
             return res.status(404).json({
                 ok: false,
+                token: req.renewedToken,
                 msg: 'La película no existe',
             });
         }
@@ -320,6 +334,7 @@ const createFavourite = async (req, res) => {
         if (!existingUser) {
             return res.status(404).json({
                 ok: false,
+                token: req.renewedToken,
                 msg: "El usuario no existe"
             });
         }
@@ -328,6 +343,7 @@ const createFavourite = async (req, res) => {
         if (favourite) {
             return res.status(404).json({
                 ok: false,
+                token: req.renewedToken,
                 msg: "Ya existe el favorito"
             });
         }
@@ -337,6 +353,7 @@ const createFavourite = async (req, res) => {
 
         return res.status(202).json({
             ok: true,
+            token: req.renewedToken,
             favourite
         });
 
@@ -345,6 +362,7 @@ const createFavourite = async (req, res) => {
         console.log(error);
         return res.status(500).json({
             ok: false,
+            token: req.renewedToken,
             msg: error
         });
     }
@@ -359,6 +377,7 @@ const deleteFavourite = async (req, res) => {
         if (!existingFilm) {
             return res.status(404).json({
                 ok: false,
+                token: req.renewedToken,
                 msg: 'La película no existe',
             });
         }
@@ -370,6 +389,7 @@ const deleteFavourite = async (req, res) => {
         if (!existingUser) {
             return res.status(404).json({
                 ok: false,
+                token: req.renewedToken,
                 msg: "El usuario no existe"
             });
         }
@@ -378,6 +398,7 @@ const deleteFavourite = async (req, res) => {
         if (!favourite) {
             return res.status(404).json({
                 ok: false,
+                token: req.renewedToken,
                 msg: "No existe el favorito"
             });
         }
@@ -386,7 +407,8 @@ const deleteFavourite = async (req, res) => {
         favourite = await favouriteModel.deleteFavourite(userId, filmId);
         console.log("FAVORITO ELIMINADO")
         return res.status(202).json({
-            ok: true
+            ok: true,
+            token: req.renewedToken,
         });
 
     } catch (error) {
@@ -394,6 +416,7 @@ const deleteFavourite = async (req, res) => {
         console.log(error);
         return res.status(500).json({
             ok: false,
+            token: req.renewedToken,
             msg: error
         });
     }
@@ -415,7 +438,8 @@ const getFavouritesOfUser = async (req, res) => {
         const existingUser = await userModel.findById(userId);
         if (!existingUser) {
             return res.status(404).json({
-                error: "El usuario no existe"
+                error: "El usuario no existe",
+                token: req.renewedToken,
             });
         }
 
@@ -424,6 +448,7 @@ const getFavouritesOfUser = async (req, res) => {
 
         return res.status(202).json({
             ok: true,
+            token: req.renewedToken,
             favourites
         });
 
@@ -431,6 +456,7 @@ const getFavouritesOfUser = async (req, res) => {
         console.log(error);
         return res.status(500).json({
             ok: false,
+            token: req.renewedToken,
             msg: error
         });
     }
