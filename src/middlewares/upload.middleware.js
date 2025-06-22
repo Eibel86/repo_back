@@ -1,6 +1,11 @@
+// IMPORTS
 const multer = require("multer");
 const path = require("path");
 
+
+
+
+// MIDDLEWARE: config almacenamiento Multer
 /**
  * Configuración de almacenamiento para Multer.
  * Define la carpeta de destino y el formato del nombre del archivo.
@@ -27,6 +32,8 @@ const storage = multer.diskStorage({
     }
 });
 
+
+// MIDDLEWARE: filtro de archivos Multer
 /**
  * Filtro para aceptar solo archivos con formato de imagen.
  * @param {*} req - Objeto de solicitud.
@@ -42,6 +49,7 @@ const fileFilter = (req, file, cb) => {
     }
 };
 
+// MIDDLEWARE: config final Multer (configs anteriores + tamaño)
 /**
  * Configuración final de Multer con almacenamiento, filtro de archivos y límite de tamaño.
  */
@@ -51,4 +59,8 @@ const upload = multer({
     limits: { fileSize: 5 * 1024 * 1024 } // Límite de 5MB
 });
 
+
+
+
+// EXPORTS 
 module.exports = upload;

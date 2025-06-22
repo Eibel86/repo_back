@@ -304,7 +304,7 @@ const deleteFilmById = async (req, res) => {
     }
 };
 
-
+// CONTROLADOR: crear favorito
 /**
  * Crea un nuevo favorito para un usuario.
  * Verifica si la película y el usuario existen, y si ya hay un favorito creado.
@@ -368,6 +368,22 @@ const createFavourite = async (req, res) => {
     }
 };
 
+// CONTROLADOR: eliminar película de favoritos
+/**
+ * Elimina una película de los favoritos de un usuario.
+ *
+ * @async
+ * @function deleteFavourite
+ * @param {Object} req - Objeto de solicitud Express.
+ * @param {Object} req.body - Cuerpo de la solicitud.
+ * @param {string} req.body.userId - ID del usuario.
+ * @param {string} req.body.filmId - ID de la película.
+ * @param {string} req.renewedToken - Token renovado (middleware previo).
+ * @param {Object} res - Objeto de respuesta Express.
+ *
+ * @returns {Promise} Respuesta JSON con el resultado de la operación.
+ * @throws {500} Error interno del servidor si falla la operación.
+ */
 const deleteFavourite = async (req, res) => {
     const { userId, filmId } = req.body;
 
@@ -422,6 +438,8 @@ const deleteFavourite = async (req, res) => {
     }
 };
 
+
+// CONTROLADOR: obtener los favoritos del usuario
 /**
  * Obtiene todas las películas favoritas de un usuario.
  * Verifica si el usuario existe antes de buscar los favoritos.
@@ -461,6 +479,11 @@ const getFavouritesOfUser = async (req, res) => {
         });
     }
 };
+
+
+
+
+
 
 // EXPORTS
 module.exports = {

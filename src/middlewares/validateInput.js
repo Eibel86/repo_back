@@ -1,4 +1,9 @@
+// IMPORTS
 const { validationResult } = require('express-validator');
+
+
+
+// MIDDLEWARE: Validación de campos de formularios
 /**
  * Middleware que valida los resultados almacenados.
  * Si hay errores, devuelve una respuesta (404) con los errores.
@@ -20,4 +25,7 @@ const validateInput = (req, res, next) => {
     next();
 }
 
+
+
+// EXPORTS
 module.exports = validateInput;

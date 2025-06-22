@@ -5,6 +5,8 @@ const { generateJWT } = require("../utils/JWTgenerate")
 
 
 
+
+
 // FUNCION login
 /**
  * Controlador para iniciar sesión de un usuario.
@@ -66,7 +68,6 @@ const login = async (req, res) => {
         });
     }
 };
-
 
 // FUNCION de registro
 /**
@@ -130,8 +131,6 @@ const registry = async (req, res) => {
     }
 };
 
-
-
 // FUNCION de renovar token
 /**
  * Controlador para renovar el token JWT de un usuario autenticado.
@@ -163,9 +162,6 @@ const renewToken = async (req, res) => {
         })
 
 }
-
-// FUNCION validar role
-const validateRole = async (req, res) => { }
 
 
 
