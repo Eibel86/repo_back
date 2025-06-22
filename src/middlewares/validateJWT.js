@@ -22,7 +22,11 @@ const validateJWT = async (req, res, next) => {
     const token = authorization.split(" ")[1];
     try {
         const playLoad = await verifyJWT(token);
-        const renewedToken = await generateJWT(playLoad.uid, playLoad.email, playLoad.role);
+        const renewedToken = await generateJWT({
+            uid: playLoad.uid,
+            email: playLoad.email,
+            role: playLoad.role
+        });
         req.tokenEmail = playLoad.email;
         req.role = playLoad.role;
         req.renewedToken = renewedToken;

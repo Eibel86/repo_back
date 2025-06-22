@@ -34,11 +34,16 @@ const { validateInput, validateJWT, upload, validateRole } = require("../middlew
 
 // GET ALL FILMS
 //GET: http://localhost:5000/api/v1/getallfilms
-router.get("/allfilms", getAllFilms);
+router.get("/allfilms", [
+    validateJWT,
+    validateRole("admin", "user")
+], getAllFilms);
 
 // GET FILM BY Title
 //GET: http://localhost:5000/api/v1/film/<title>
 router.get("/film/search/:title", [
+    validateJWT,
+    validateRole("admin", "user"),
     check("title", "invalid title").notEmpty()
         .withMessage('El título no puede estar vacío')
         .isLength({ min: 2, max: 100 })
@@ -49,6 +54,8 @@ router.get("/film/search/:title", [
 // GET FILM BY ID
 //GET: http://localhost:5000/api/v1/film/<id>
 router.get("/film/searching/:film_id", [
+    validateJWT,
+    validateRole("admin", "user"),
     check("film_id", "invalid id").notEmpty()
         .withMessage('La id es obligatoria, en formato numerico')
         .isInt({ min: 1, max: 500 })
@@ -60,6 +67,8 @@ router.get("/film/searching/:film_id", [
 // TODO: revisar los métodos de express
 //POST: http://localhost:5000/api/v1/createfilm
 router.post("/createfilm", [
+    validateJWT,
+    validateRole("admin"),
     upload.single("image"),
     check("full_title", "invalid title").notEmpty()
         .withMessage('El título no puede estar vacío')
@@ -90,6 +99,8 @@ router.post("/createfilm", [
 //UPDATE FILM BY ID
 //PUT: http://localhost:5000/api/v1/updatefilm
 router.post("/updatefilm", [
+    validateJWT,
+    validateRole("admin"),
     upload.single("image"),
     check("film_id", "invalid id").notEmpty()
         .withMessage('La id es obligatoria, en formato numerico')
@@ -123,6 +134,8 @@ router.post("/updatefilm", [
 //DELETE FILM BY ID
 //DELETE: http://localhost:5000/api/v1/film/<id>
 router.delete("/deletefilm/:film_id", [
+    validateJWT,
+    validateRole("admin"),
     check("film_id", "invalid id").notEmpty()
         .withMessage('La id es obligatoria, en formato numerico')
         .isInt({ min: 1, max: 500 })
@@ -132,10 +145,39 @@ router.delete("/deletefilm/:film_id", [
 
 
 
-router.post("/addFavourite", createFavourite);
+router.post("/addFavourite", [
+    validateJWT,
+    validateRole("admin", "user"),
+    check("userId", "id invalida").notEmpty()
+        .withMessage("user Id no puede estar vacio")
+        .isInt()
+        .withMessage("La id debe estar en formato numérico"),
+    check("filmId", "id invalida").notEmpty()
+        .withMessage("film Id no puede estar vacio")
+        .isInt()
+        .withMessage("La id debe estar en formato numérico")
+], createFavourite);
 
-router.post("/deleteFavourite", deleteFavourite);
+router.post("/deleteFavourite", [
+    validateJWT,
+    validateRole("admin", "user"),
+    check("userId", "id invalida").notEmpty()
+        .withMessage("user Id no puede estar vacio")
+        .isInt()
+        .withMessage("La id debe estar en formato numérico"),
+    check("filmId", "id invalida").notEmpty()
+        .withMessage("film Id no puede estar vacio")
+        .isInt()
+        .withMessage("La id debe estar en formato numérico")
+], deleteFavourite);
 
-router.get("/getFavourites/:userId", getFavouritesOfUser);
+router.get("/getFavourites/:userId", [
+    validateJWT,
+    validateRole("admin", "user"),
+    check("userId", "id invalida").notEmpty()
+        .withMessage("user Id no puede estar vacio")
+        .isInt()
+        .withMessage("La id debe estar en formato numérico")
+], getFavouritesOfUser);
 // EXPORTS
 module.exports = router;
