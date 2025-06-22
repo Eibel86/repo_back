@@ -208,7 +208,6 @@ const createFilm = async (req, res) => {
  * @returns {Promise} No retorna valor, responde con JSON.
  */
 const updateFilmById = async (req, res) => {
-    console.log("ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo")
     try {
         const { //Extrae del body los datos que pueden actualizarse
             full_title, director_name,
@@ -216,7 +215,7 @@ const updateFilmById = async (req, res) => {
             release_date, duration,
             synopsis, film_id
         } = req.body;
-        const image_url = req.file.path;
+        const image_url = req.file ? req.file.path : null;
         const director_id = await directorModel.insertDirectorIfNotExists(director_name); //Inserta el director si no existe y se obtiene su id
         const genre_id = await genreModel.insertGenreIfNotExists(genre_name); //Inserta el género si no existe y se obtiene su id
 
