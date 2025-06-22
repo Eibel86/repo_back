@@ -208,15 +208,15 @@ const createFilm = async (req, res) => {
  * @returns {Promise} No retorna valor, responde con JSON.
  */
 const updateFilmById = async (req, res) => {
+    console.log("ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo")
     try {
-        const { film_id } = req.params; //Extrae ese parámetro de la URL (req.params)
         const { //Extrae del body los datos que pueden actualizarse
             full_title, director_name,
-            genre_name, image_url,
+            genre_name,
             release_date, duration,
-            synopsis
+            synopsis, film_id
         } = req.body;
-
+        const image_url = req.file.path;
         const director_id = await directorModel.insertDirectorIfNotExists(director_name); //Inserta el director si no existe y se obtiene su id
         const genre_id = await genreModel.insertGenreIfNotExists(genre_name); //Inserta el género si no existe y se obtiene su id
 
@@ -267,6 +267,7 @@ const deleteFilmById = async (req, res) => {
     const { film_id } = req.params; //Extrae el parámetro de la URL (req.params)
 
     try {
+        console.log("estamos aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii")
         // Llama a la función del modelo que elimina la película por su ID
         const deleted = await filmModel.deleteById(Number(film_id)); //Convierte a número para evitar errores de tipo
 
