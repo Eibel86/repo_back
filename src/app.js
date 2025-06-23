@@ -1,37 +1,51 @@
-const express = require("express");
+// IMPORTS -------------------------
+const express = require("express"); //Importa el framework
+require("dotenv").config(); //Carga las variables de entorno
 
-require("dotenv").config();
-const { authRoutes, publicRoutes } = require("./routes/index.routes")
-const app = express();
-const cors = require("cors");
+const { authRoutes, publicRoutes } = require("./routes/index.routes") //Importa las rutas de autenticación y rutas públicas
+const app = express(); //Instancia de una app de Express
+const cors = require("cors"); //Md de CORS para preser
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5000; 
 
-// body parser
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+
+
+
+// MIDDLEWARES ----------------------
+// MD: Parseo
+app.use(express.urlencoded({ extended: true })); //Parsear datos URL-encoded (formularios HTML)
+app.use(express.json()); //Parsear JSON en las peticiones 
+
+// MD: Configuración de las CORS 
 const frontUrl = process.env.FRONT_URL || "http://localhost:4000"
 const whiteList = [frontUrl]
 app.use(cors({
-    origin: whiteList
+    origin: whiteList //Peticiones desde dominios de la lista
 }))
+
+// MD: Loguear peticiones entrantes
 app.use((req, res, next) => {
     console.log(`➡️ ${req.method} ${req.originalUrl}`);
     next();
 });
 
-app.use("/uploads", express.static("uploads"));
+// MD: Servir archivos estáticos
+app.use("/uploads", express.static("uploads")); //Esto permite acceder a imágenes o archivos subidos desde el navegador
 
 
 
 
-app.use("/auth", authRoutes);
 
-app.use("/api/v1", publicRoutes);
+// RUTAS  -----------------------------------
+app.use("/auth", authRoutes); //Rutas relacionadas con la autenticación (login, registro, etc.)
+app.use("/api/v1", publicRoutes); //Rutas públicas de la API (ej: películas, favoritos, etc.)
 
 
 
 
+
+// INICIO DEL SERVIDOR ----------------------
+// Inicia el servidor y muestra un mensaje en consola
 app.listen(port, () => {
     console.log(`server run on port: ${port}`)
 })
