@@ -1,6 +1,11 @@
+// IMPORTS
 const { verifyJWT } = require("../utils/JWTveryfy")
 const { generateJWT } = require("../utils/JWTgenerate")
 
+
+
+
+// MIDDLEWARE: validación de tokens
 /**
  * Middleware para validar tokens JWT en las solicitudes HTTP.
  * Verifica la presencia y validez del token en el header 'Authorization'.
@@ -44,4 +49,7 @@ const validateJWT = async (req, res, next) => {
 }
 
 
+
+
+// EXPORTS 
 module.exports = validateJWT

@@ -5,22 +5,27 @@ const queries = require('../queries/film.queries');
 
 
 
-/* MODELO DE PELÍCULAS
-    Contiene funciones para interactuar con la base de datos relacionadas con películas, directores y géneros.*/
-
-// FUNCIÓN: Conseguir todas las películas
+// MODEL: obtener todas las películas
+/**
+ * Obtiene todas las películas de la base de datos.
+ *
+ * @async
+ * @function getAll
+ * @returns {Promise <Array <Object> >} Lista de todas las películas.
+ */
 const getAll = async () => {
   const result = await queryDB(queries.getAllFilms);
   return result.rows;
 };
     
-// FUNCION: Buscar película por título
+// MODEL: Buscar películas por título
 /**
- * Busca una película por su título completo.
- * Si la encuentra, devuelve el objeto de la película. Si no, devuelve null.
- * 
- * @param {string} title - El título completo de la película.
- * @returns {Promise <Object | null>} Película encontrada o null si no existe.
+ * Busca películas cuyo título contenga una coincidencia parcial.
+ *
+ * @async
+ * @function findByTitleAll
+ * @param {string} title - Título (o parte del título) de la película.
+ * @returns {Promise <Array <Object> >} Array de películas que coinciden (puede estar vacío).
  */
 const findByTitleAll = async (title) => {
   const result = await queryDB(
@@ -31,6 +36,15 @@ const findByTitleAll = async (title) => {
   return result.rows; // Devuelve array (vacío si no hay coincidencias)
 };
 
+// MODEL: Buscar película por título (devuelve 1)
+/**
+ * Busca una película por su título y devuelve la primera coincidencia. 
+ *
+ * @async
+ * @function findByTitleOne
+ * @param {string} title - Título exacto de la película.
+ * @returns {Promise<Object|null>} Objeto de la película o null si no se encuentra.
+ */
 const findByTitleOne = async (title) => {
   const result = await queryDB(
     queries.findByTitleOne,
@@ -40,6 +54,14 @@ const findByTitleOne = async (title) => {
 };
 
 // FUNCION: Buscar película por id
+/**
+ * Busca una película por su ID.
+ *
+ * @async
+ * @function findById
+ * @param {number} id - ID de la película.
+ * @returns {Promise <Object | null>} Película encontrada o null si no existe.
+ */
 const findById = async (id) => {
   const result = await queryDB(queries.findById, [id]);
   return result.rows[0] || null;
@@ -75,6 +97,22 @@ const insertFilm = async (filmData) => {
 };
 
 // FUNCION: Actualizar película por id
+/**
+ * Actualiza una película por su ID.
+ *
+ * @async
+ * @function updateById
+ * @param {Object} filmData - Datos actualizados de la película.
+ * @param {number} filmData.film_id - ID de la película a actualizar.
+ * @param {number} filmData.director_id - Nuevo ID de director.
+ * @param {number} filmData.genre_id - Nuevo ID de género.
+ * @param {string} filmData.full_title - Nuevo título.
+ * @param {string} filmData.image_url - Nueva URL de imagen.
+ * @param {string} filmData.release_date - Nueva fecha de estreno.
+ * @param {number} filmData.duration - Nueva duración.
+ * @param {string} filmData.synopsis - Nueva sinopsis.
+ * @returns {Promise <Object | null>} Película actualizada o null si no se encontró.
+ */
 const updateById = async ({
     film_id, director_id,
     genre_id, full_title,
@@ -91,6 +129,14 @@ const updateById = async ({
   };
 
 // FUNCIÓN: Borrar por id
+/**
+ * Elimina una película por su ID.
+ *
+ * @async
+ * @function deleteById
+ * @param {number} film_id - ID de la película a eliminar.
+ * @returns {Promise <Object>} Objeto de la película eliminada (según devuelve la base de datos).
+ */
 const deleteById = async (film_id) => {
   const result = await queryDB(queries.deleteById, [film_id]);
   return result.rows[0];

@@ -1,5 +1,5 @@
-// QUERIES (consultas a bbdd)
 
+// QUERIES USUARIOS: 
 /**
  * Consultas SQL relacionadas con la tabla "users".
  *
@@ -17,6 +17,7 @@
 const userQueries = {
   // Selecciona todo de la tabla users con un email coincidente
   findByEmail: `SELECT * FROM users WHERE email = $1`,
+  
   // Selecciona todo de la tabla users con un id coincidente
   findById: `SELECT * FROM users WHERE user_id = $1`,
 

@@ -1,6 +1,11 @@
-const { queryDB } = require("./DBquery");
-const bcrypt = require("bcryptjs");
+// IMPORTS
+const { queryDB } = require("./DBquery"); //Función para ejecutar queries SQL en la base de datos
+const bcrypt = require("bcryptjs"); //Librería para encriptar contraseñas
 
+
+
+
+// UTIL: reiniciar e inicializar la base de datos con datos de ejemplo
 const initDB = async () => {
     try {
         // 1. Borrar tablas (orden importa por las FK)

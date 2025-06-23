@@ -1,6 +1,5 @@
-// QUERIES (consultas a bbdd)
 
-
+// QUERIES PELÍCULAS: 
 /**
  * Consultas SQL relacionadas con la gestión de películas,
  * directores y géneros en la base de datos.
