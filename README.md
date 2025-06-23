@@ -64,6 +64,9 @@ Modo desarrollo con nodemon.
 - `npm run db-init`
 Crea las tablas y datos de ejemplo en la base de datos
 
+- `npm run docs`
+Genera la documentación.
+
 ## Estructura de carpetas
 
 repo_back/
